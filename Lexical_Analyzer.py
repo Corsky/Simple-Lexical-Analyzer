@@ -6,7 +6,7 @@ ResTable = [
     'do', 'int', 'long', 'register', 'return', 'short', 'signed',
     'sizeof', 'static', 'struct', 'switch', 'typedef', 'union',
     'unsigned', 'void', 'volatile', 'while', 'double', 'else', 'enum',
-    'extern', 'float', 'for', 'goto', 'if'
+    'extern', 'float', 'for', 'goto', 'if', 'end'
 ]
 
 #Table reserved for user defined variables
@@ -136,6 +136,36 @@ def TypeCheck(input):
                 ret.append([x, 'VAR_CODE'])
     return ret
 
+# This function is the Error Check function for checking the syntax error.
+# For now I only checked for
+# 1.Parenthesis
+# 2.Brace
+# Adding other checks later.
+def ErrorCheck(TokenTable):
+    p = 0
+    for i in TokenTable:
+        if i[1]=='LPARENTHESIS':
+            p=p+1
+        if i[1]=='RPARENTHESIS':
+            p=p-1
+        if p<0:
+            break
+    if not p==0:
+        print('Syntax Error: Parenthesis error')
+    d = 0
+    for i in TokenTable:
+        if i[1]=='LBRACE':
+            d = d + 1
+        if i[1]=='RBRACE':
+            d = d - 1
+        if d < 0:
+            break
+    if not d==0:
+        print('Syntax Error: Brace error')
+
+
+
+
 
 #This function is the main program for the analyzer.
 def LexicalAnalyzer(input):
@@ -143,6 +173,7 @@ def LexicalAnalyzer(input):
     TokenTable = TypeCheck(Token)
     for x in TokenTable:
         print(x)
+    ErrorCheck(TokenTable)
 
 
 
